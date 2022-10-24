@@ -35,9 +35,11 @@ namespace Siccity.GLTFUtility {
 
 			public IEnumerator CreateTextureAsync(bool linear, Action<Texture2D> onFinish, Action<float> onProgress = null) {
 				if (!string.IsNullOrEmpty(path)) {
+					
 #if UNITY_EDITOR
+					string relativePath = path.Substring(path.IndexOf("Assets")); // fs-fix: get relative path and then pass it below
 					// Load textures from asset database if we can
-					Texture2D assetTexture = UnityEditor.AssetDatabase.LoadAssetAtPath(path, typeof(Texture2D)) as Texture2D;
+					Texture2D assetTexture = UnityEditor.AssetDatabase.LoadAssetAtPath(relativePath, typeof(Texture2D)) as Texture2D;
 					if (assetTexture != null) {
 						onFinish(assetTexture);
 						if (onProgress != null) onProgress(1f);
